@@ -44,7 +44,7 @@ For your second milestone, explain what you've worked on since your previous mil
 # First Milestone
 
 **First Milestone
-<iframe width="560" height="315" src="https://www.youtube.com/embed/m1lT-EZTn98" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/m1lT-EZTn98?rel=0" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen scrolling="no" allow="accelerometer *; clipboard-write *; encrypted-media *; gyroscope *; picture-in-picture *; web-share *;" referrerpolicy="strict-origin"></iframe>
 For my first milestone, I got the robot chassis moving using basic Arduino code, testing forward, backward, left, and right movements to confirm that the motor wiring and control logic were working correctly. My biggest challenge was untangling the motor wiring — sorting out which wires controlled speed versus direction for the left and right sides — since a mix-up here made my code behave unpredictably at first. Once I traced and corrected the wiring, the robot responded smoothly to each command. Next, I plan to build the handheld glove controller, which will use an accelerometer and a second Bluetooth adapter to send gesture-based commands wirelessly to the robot — for example, tilting the glove forward to drive the robot forward and tilting it right to turn right.
 
 # Schematics 
