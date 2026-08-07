@@ -15,13 +15,6 @@ This project is a Bluetooth controlled robot that drives based on hand gestures.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OcDhmMhwXHM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 With my final milestone completed the project its officially complete! Since milestone 2 I've added a new robotic hand that uses a servo motor to open and close when I press a button that's on the hand module. Overall my biggest challenge at BSE was time, because of how finicky the Bluetooth was getting it to work took a majority of my time on the project, but in the end I was still able to complete and be proud of my project. One of the biggest things I learned was how Bluetooth works and it is super interesting and complicated. In the future I want to apply the skills I learned at BSE to a fully personal project, not connected to school or a summer program, just something for myself.
 
-For your final milestone, explain the outcome of your project. Key details to include are:
-- What you've accomplished since your previous milestone
-- What your biggest challenges and triumphs were at BSE
-- A summary of key topics you learned about
-- What you hope to learn in the future after everything you've learned at BSE
-
-
 
 # Second Milestone
 
@@ -336,8 +329,11 @@ void checkGestures() {
 | DMM | Digital multimeter used to test voltage, continuity, and debug wiring | $9.99 | <a href="https://www.amazon.com/dp/B0CXM242J1"> Link </a> |
 
 
+#Resources
 
-
+- [Hand Gesture Control Robot via Bluetooth — Hackster.io](https://www.hackster.io/embeddedlab786/hand-gesture-control-robot-via-bluetooth-94b13d)
+- [Project Write-Up (Google Doc)](https://docs.google.com/document/d/1EpnEPulXQwPDSK-nKLohqPjpeXNteP2G/edit)
+- [Reference Video](https://www.youtube.com/watch?v=BXXAcFOTnBo)
 
 
 
