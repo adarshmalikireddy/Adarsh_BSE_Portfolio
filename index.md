@@ -1,11 +1,6 @@
 # BlueStamp Bluetooth Controlled Gesture Robot
-Replace this text with a brief description (2-3 sentences) of your project. This description should draw the reader in and make them interested in what you've built. You can include what the biggest challenges, takeaways, and triumphs from completing the project were. As you complete your portfolio, remember your audience is less familiar than you are with all that your project entails!
+This project is a Bluetooth controlled robot that drives based on hand gestures. One of the two parts of the robot is the glove/hand part that has a Ardiuno Nano 33 BLE Sense and an accelerometer to read the tilt of my hand and then sends data wirelessly using a HC-05 Bluetooth module. The 2nd part of the project, the robot uses an Ardiuno Uno, a motor driver and another HC-05 Bluetooth module. 
 
-You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
-```HTML 
-<!--- This is an HTML comment in Markdown -->
-<!--- Anything between these symbols will not render on the published site -->
-```
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
@@ -33,7 +28,7 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/745LfcR1r0Y?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
 - Technical details of what you've accomplished and how they contribute to the final goal
@@ -43,7 +38,7 @@ For your second milestone, explain what you've worked on since your previous mil
 
 # First Milestone
 
-**First Milestone
+First Milestone
 <iframe width="560" height="315" src="https://www.youtube.com/embed/m1lT-EZTn98" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 For my first milestone, I got the robot chassis moving using basic Arduino code, testing forward, backward, left, and right movements to confirm that the motor wiring and control logic were working correctly. My biggest challenge was untangling the motor wiring — sorting out which wires controlled speed versus direction for the left and right sides — since a mix-up here made my code behave unpredictably at first. Once I traced and corrected the wiring, the robot responded smoothly to each command. Next, I plan to build the handheld glove controller, which will use an accelerometer and a second Bluetooth adapter to send gesture-based commands wirelessly to the robot — for example, tilting the glove forward to drive the robot forward and tilting it right to turn right.
 
