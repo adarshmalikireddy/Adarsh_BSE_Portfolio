@@ -37,7 +37,7 @@ For my first milestone, I got the robot chassis moving using basic Arduino code,
 
 # Schematics 
 
-(updateschem (1).png)
+![Robot Schematic] (updateschem (1).png)
 # Code
 
 UNO code
