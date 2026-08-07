@@ -329,7 +329,7 @@ void checkGestures() {
 | DMM | Digital multimeter used to test voltage, continuity, and debug wiring | $9.99 | <a href="https://www.amazon.com/dp/B0CXM242J1"> Link </a> |
 
 
-#Resources
+# Resources
 
 - [Hand Gesture Control Robot via Bluetooth — Hackster.io](https://www.hackster.io/embeddedlab786/hand-gesture-control-robot-via-bluetooth-94b13d)
 - [Project Write-Up (Google Doc)](https://docs.google.com/document/d/1EpnEPulXQwPDSK-nKLohqPjpeXNteP2G/edit)
