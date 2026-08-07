@@ -8,7 +8,7 @@ This project is a Bluetooth controlled robot that drives based on hand gestures.
 
 **Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
 
-![Headstone Image](meandproject.png)
+![Headstone Image](meandproject.jpg)
   
 # Final Milestone
 
