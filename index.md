@@ -12,9 +12,8 @@ This project is a Bluetooth controlled robot that drives based on hand gestures.
   
 # Final Milestone
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OcDhmMhwXHM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+With my final milestone completed the project its officially complete! Since milestone 2 I've added a new robotic hand that uses a servo motor to open and close when I press a button that's on the hand module. Overall my biggest challenge at BSE was time, because of how finicky the Bluetooth was getting it to work took a majority of my time on the project, but in the end I was still able to complete and be proud of my project. One of the biggest things I learned was how Bluetooth works and it is super interesting and complicated. In the future I want to apply the skills I learned at BSE to a fully personal project, not connected to school or a summer program, just something for myself.
 
 For your final milestone, explain the outcome of your project. Key details to include are:
 - What you've accomplished since your previous milestone
@@ -40,19 +39,279 @@ For my first milestone, I got the robot chassis moving using basic Arduino code,
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
 
 # Code
-Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
+UNO code
 ```c++
+/*
+  ===================================================================
+  COMBINED SKETCH — Model Y 2.0 Motor Test + Bluetooth Claw Control
+  ===================================================================
+  Motors (Channel B test, BK1-4 sockets):
+    Left side  (BK1/BK2): ENA=10, IN1=9, IN2=8
+    Right side (BK3/BK4): ENB=5,  IN3=6, IN4=7
+
+  Bluetooth (HC-05 via SoftwareSerial) + Claw Servo:
+    BT_RX_PIN = 2   (Uno pin <- HC-05 TXD, safe as-is)
+    BT_TX_PIN = 3   (Uno pin -> HC-05 RXD, NEEDS a voltage divider)
+    SERVO_PIN = 13  (any free PWM-capable pin)
+
+  Sends 'T' over Bluetooth to toggle the claw open/closed.
+
+  NOTE ON TIMING:
+  The motor test uses delay() calls, which block execution. During
+  those delays, incoming Bluetooth bytes queue up in the SoftwareSerial
+  buffer but aren't processed until the delay ends. checkBluetooth()
+  is called between each motor phase so the claw responds as promptly
+  as this blocking structure allows. If you need instant claw response
+  even mid-motor-move, the loop would need to be rewritten to use
+  millis() timing instead of delay() — let me know if you want that
+  version instead.
+  ===================================================================
+*/
+
+#include <Servo.h>
+#include <SoftwareSerial.h>
+
+// ---------------- Motor pins ----------------
+#define enLeft   10
+#define inLeft_1 9
+#define inLeft_2 8
+
+#define enRight   5
+#define inRight_1 6
+#define inRight_2 7
+
+int Speed = 150;
+int testTime = 2000;
+int pauseTime = 1500;
+
+// ---------------- Bluetooth / Servo pins ----------------
+const int BT_RX_PIN = 2;    // Uno pin <- HC-05 TXD
+const int BT_TX_PIN = 3;    // Uno pin -> HC-05 RXD (voltage divider needed)
+const int SERVO_PIN  = 13;  // claw servo
+
+SoftwareSerial btSerial(BT_RX_PIN, BT_TX_PIN); // RX, TX
+Servo clawServo;
+
+const int OPEN_ANGLE = 90;    // adjust to whatever fully opens your claw
+const int CLOSED_ANGLE = 0;   // adjust to whatever fully closes your claw
+bool clawOpen = true;
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  Serial.println("Hello World!");
+  Serial.begin(9600);         // USB serial, for debugging only
+
+  // Motors
+  pinMode(enLeft, OUTPUT); pinMode(inLeft_1, OUTPUT); pinMode(inLeft_2, OUTPUT);
+  pinMode(enRight, OUTPUT); pinMode(inRight_1, OUTPUT); pinMode(inRight_2, OUTPUT);
+  stopAll();
+
+  // Bluetooth + Servo
+  btSerial.begin(38400);      // must match HC-05 baud rate
+  clawServo.attach(SERVO_PIN);
+  clawServo.write(OPEN_ANGLE);
+
+  delay(2000);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  Serial.println("LEFT side FORWARD");
+  driveSide(enLeft, inLeft_1, inLeft_2, 1);
+  delay(testTime);
+  stopAll();
+  checkBluetooth();
+  delay(pauseTime);
 
+  Serial.println("LEFT side BACKWARD");
+  driveSide(enLeft, inLeft_1, inLeft_2, -1);
+  delay(testTime);
+  stopAll();
+  checkBluetooth();
+  delay(pauseTime);
+
+  Serial.println("RIGHT side FORWARD");
+  driveSide(enRight, inRight_1, inRight_2, 1);
+  delay(testTime);
+  stopAll();
+  checkBluetooth();
+  delay(pauseTime);
+
+  Serial.println("RIGHT side BACKWARD");
+  driveSide(enRight, inRight_1, inRight_2, -1);
+  delay(testTime);
+  stopAll();
+  checkBluetooth();
+  delay(pauseTime);
+
+  Serial.println("Loop complete. Pausing before repeat...");
+  checkBluetooth();
+  delay(4000);
 }
+
+// ---------------- Motor helpers ----------------
+void driveSide(int enPin, int in1Pin, int in2Pin, int dir) {
+  if (dir == 1) {
+    digitalWrite(in1Pin, LOW);
+    digitalWrite(in2Pin, HIGH);
+  } else if (dir == -1) {
+    digitalWrite(in1Pin, HIGH);
+    digitalWrite(in2Pin, LOW);
+  } else {
+    digitalWrite(in1Pin, LOW);
+    digitalWrite(in2Pin, LOW);
+  }
+  analogWrite(enPin, (dir == 0) ? 0 : Speed);
+}
+
+void stopAll() {
+  driveSide(enLeft, inLeft_1, inLeft_2, 0);
+  driveSide(enRight, inRight_1, inRight_2, 0);
+}
+
+// ---------------- Bluetooth / claw helper ----------------
+void checkBluetooth() {
+  while (btSerial.available()) {
+    char c = btSerial.read();
+    if (c == 'T') {
+      clawOpen = !clawOpen;
+      clawServo.write(clawOpen ? OPEN_ANGLE : CLOSED_ANGLE);
+      Serial.println(clawOpen ? "Claw: OPEN" : "Claw: CLOSED");
+    }
+  }
+}
+
+```
+Nano code
+
+```c++
+/*
+  ===================================================================
+  NANO 33 BLE SENSE — COMBINED TRANSMITTER
+  Button toggle ('T') + IMU gesture commands (f/b/l/r/s)
+  Sent over HC-05 wired to Serial1 (pins D0/D1).
+  ===================================================================
+  Wiring:
+    Button:  one leg -> D2, other leg -> GND  (uses internal pull-up)
+    HC-05:   VCC -> 5V or 3.3V per YOUR module's spec
+             GND -> GND
+             TXD -> Nano D0 (RX)
+             RXD -> Nano D1 (TX)   <-- check logic-level requirements
+
+  HC-05 baud rate: 38400 (confirmed). This matches the Uno claw
+  receiver sketch's btSerial.begin(38400) — no changes needed there.
+  ===================================================================
+*/
+
+#include <Arduino_BMI270_BMM150.h>
+
+// ---------------- Bluetooth ----------------
+#define BT_Serial Serial1
+const long BT_BAUD = 38400;
+
+// ---------------- Button ----------------
+const int BUTTON_PIN = 2;   // change if your free pin differs
+
+bool lastReading = HIGH;          // HIGH = not pressed (INPUT_PULLUP)
+int stableState = HIGH;
+unsigned long lastChangeTime = 0;
+const unsigned long DEBOUNCE_MS = 50;
+
+// ---------------- IMU / gestures ----------------
+float x, y, z;
+int flag = 0;
+
+void setup() {
+  Serial.begin(115200);        // USB Serial Monitor, debugging only
+  while (!Serial);
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  BT_Serial.begin(BT_BAUD);    // HC-05 data mode
+
+  Serial.println("Nano 33 BLE Sense Controller (button + IMU)");
+
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  }
+  Serial.println("IMU Ready");
+}
+
+void loop() {
+  checkButton();
+  Read_accelerometer();
+  checkGestures();
+  delay(100);
+}
+
+// ---------------- Button handling ----------------
+void checkButton() {
+  int reading = digitalRead(BUTTON_PIN);
+
+  if (reading != lastReading) {
+    lastChangeTime = millis();
+  }
+
+  if ((millis() - lastChangeTime) > DEBOUNCE_MS) {
+    if (reading != stableState) {
+      stableState = reading;
+      if (stableState == LOW) {     // button just pressed (active LOW)
+        BT_Serial.print('T');
+        Serial.println("Sent toggle command: T");
+      }
+    }
+  }
+
+  lastReading = reading;
+}
+
+// ---------------- IMU handling ----------------
+void Read_accelerometer() {
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(x, y, z);
+    Serial.print("X: ");
+    Serial.print(x);
+    Serial.print("\tY: ");
+    Serial.print(y);
+    Serial.print("\tZ: ");
+    Serial.println(z);
+  }
+}
+
+void checkGestures() {
+  // Forward
+  if (x < -0.8 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('f');
+    Serial.println("Forward");
+  }
+  // Backward
+  if (x > 0.8 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('b');
+    Serial.println("Backward");
+  }
+  // Left
+  if (y < -0.8 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('l');
+    Serial.println("Left");
+  }
+  // Right
+  if (y > 0.8 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('r');
+    Serial.println("Right");
+  }
+  // Stop
+  if ((x > -0.3 && x < 0.3) &&
+      (y > -0.3 && y < 0.3) &&
+      flag == 1) {
+    flag = 0;
+    BT_Serial.write('s');
+    Serial.println("Stop");
+  }
+}
+
 ```
 # Bill of Materials
 Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
