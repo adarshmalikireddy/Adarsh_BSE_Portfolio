@@ -36,8 +36,8 @@ First Milestone
 For my first milestone, I got the robot chassis moving using basic Arduino code, testing forward, backward, left, and right movements to confirm that the motor wiring and control logic were working correctly. My biggest challenge was untangling the motor wiring — sorting out which wires controlled speed versus direction for the left and right sides — since a mix-up here made my code behave unpredictably at first. Once I traced and corrected the wiring, the robot responded smoothly to each command. Next, I plan to build the handheld glove controller, which will use an accelerometer and a second Bluetooth adapter to send gesture-based commands wirelessly to the robot — for example, tilting the glove forward to drive the robot forward and tilting it right to turn right.
 
 # Schematics 
-Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
 
+(
 # Code
 
 UNO code
@@ -314,8 +314,6 @@ void checkGestures() {
 
 ```
 # Bill of Materials
-Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
-Don't forget to place the link of where to buy each component inside the quotation marks in the corresponding row after href =. Follow the guide [here](https://www.markdownguide.org/extended-syntax/) to learn how to customize this to your project needs.
 
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
@@ -339,12 +337,3 @@ Don't forget to place the link of where to buy each component inside the quotati
 
 
 
-
-
-# Other Resources/Examples
-One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
-- [Example 1](https://trashytuber.github.io/YimingJiaBlueStamp/)
-- [Example 2](https://sviatil0.github.io/Sviatoslav_BSE/)
-- [Example 3](https://arneshkumar.github.io/arneshbluestamp/)
-
-To watch the BSE tutorial on how to create a portfolio, click here.
